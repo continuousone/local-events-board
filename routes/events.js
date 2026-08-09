@@ -4,6 +4,8 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinary');
 const Event = require('../models/Event');
+const Attendee = require('../models/Attendee');
+const EventAttendee = require('../models/EventAttendee');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -41,10 +43,25 @@ router.get('/', (req, res) => {
       attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('category')), 'category']],
       raw: true,
       order: [['category', 'ASC']]
-    })
+    }),
+  EventAttendee.findAll({
+  attributes: ['eventId', [Sequelize.fn('COUNT', Sequelize.col('eventId')), 'count']],
+  group: ['eventId'],
+  raw: true
+})
   ])
-    .then(([events, categoryRows]) => {
+    .then(([events, categoryRows, rsvpCounts]) => {
       const categories = categoryRows.map(row => row.category).filter(Boolean);
+
+      // Attach an attendee count to each event, defaulting to 0
+      const countsByEventId = {};
+      rsvpCounts.forEach(row => {
+        countsByEventId[row.eventId] = parseInt(row.count, 10);
+      });
+      events.forEach(event => {
+        event.attendeeCount = countsByEventId[event.id] || 0;
+      });
+
       res.render('events', {
         events,
         categories,
@@ -83,7 +100,6 @@ router.post('/add', upload.single('image'), (req, res) => {
   } else {
     category = category.toLowerCase();
 
-    // req.file.path is the Cloudinary URL
     Event.create({
       title,
       category,
@@ -143,6 +159,62 @@ router.post('/edit/:id', upload.single('image'), (req, res) => {
 router.post('/delete/:id', (req, res) => {
   Event.destroy({ where: { id: req.params.id } })
     .then(() => res.redirect('/events'))
+    .catch(err => res.render('error', { error: err.message }));
+});
+
+// Show RSVP form + who's already RSVP'd for an event
+router.get('/:id/rsvp', (req, res) => {
+  Event.findByPk(req.params.id)
+    .then(event => {
+      if (!event) return res.redirect('/events');
+      return event.getAttendees()
+        .then(attendeeInstances => {
+          const attendees = attendeeInstances.map(a => ({
+            name: a.name,
+            email: a.email,
+            status: a.event_attendee ? a.event_attendee.status : 'going'
+          }));
+          res.render('rsvp', { event: event.get({ plain: true }), attendees });
+        });
+    })
+    .catch(err => res.render('error', { error: err.message }));
+});
+
+// Submit an RSVP
+router.post('/:id/rsvp', (req, res) => {
+  const { name, email, status } = req.body;
+  let errors = [];
+
+  if (!name) errors.push({ text: 'Please add your name' });
+  if (!email) errors.push({ text: 'Please add your email' });
+
+  if (errors.length > 0) {
+    return Event.findByPk(req.params.id, { raw: true })
+      .then(event => {
+        if (!event) return res.redirect('/events');
+        res.render('rsvp', { event, errors, name, email });
+      })
+      .catch(err => res.render('error', { error: err.message }));
+  }
+
+  Event.findByPk(req.params.id)
+    .then(event => {
+      if (!event) return res.redirect('/events');
+
+      Attendee.findOrCreate({ where: { email }, defaults: { name } })
+        .then(([attendee]) =>
+          EventAttendee.findOrCreate({
+            where: { eventId: event.id, attendeeId: attendee.id },
+            defaults: { status: status || 'going' }
+          }).then(([rsvp, created]) => {
+            if (!created) {
+              rsvp.status = status || 'going';
+              return rsvp.save();
+            }
+          })
+        )
+        .then(() => res.redirect(`/events/${event.id}/rsvp`));
+    })
     .catch(err => res.render('error', { error: err.message }));
 });
 

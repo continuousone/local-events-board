@@ -1,6 +1,25 @@
 <section id="events" class="container mx-auto px-6 py-8">
     <h1 class="text-3xl font-bold mb-6">All Events</h1>
 
+    <form method="GET" action="/events" class="flex flex-wrap gap-4 mb-6">
+      <div>
+        <label for="sort" class="block text-sm mb-1">Sort by date</label>
+        <select name="sort" id="sort" class="input-box" onchange="this.form.submit()">
+          <option value="date_asc" {{#ifEquals sort "date_asc"}}selected{{/ifEquals}}>Soonest first</option>
+          <option value="date_desc" {{#ifEquals sort "date_desc"}}selected{{/ifEquals}}>Latest first</option>
+        </select>
+      </div>
+      <div>
+        <label for="category" class="block text-sm mb-1">Category</label>
+        <select name="category" id="category" class="input-box" onchange="this.form.submit()">
+          <option value="all" {{#ifEquals category "all"}}selected{{/ifEquals}}>All categories</option>
+          {{#each categories}}
+            <option value="{{this}}" {{#ifEquals ../category this}}selected{{/ifEquals}}>{{this}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </form>
+
     <div class="flex flex-wrap gap-6">
       {{#each events}}
         <div class="w-80 bg-gray-900 text-white rounded-lg shadow-lg overflow-hidden flex flex-col">
@@ -15,8 +34,10 @@
             <div class="mt-auto">
               <p class="text-sm mb-1">Date: {{event_date}}</p>
               <p class="text-sm mb-1">Location: {{location}}</p>
-              <p class="text-xs text-gray-400 mb-3">Category: {{category}}</p>
+              <p class="text-xs text-gray-400 mb-1">Category: {{category}}</p>
+              <p class="text-xs text-gray-400 mb-3">{{attendeeCount}} going</p>
               <div class="flex flex-wrap gap-2">
+                <a href="/events/{{id}}/rsvp" class="inline-block bg-green-600 hover:bg-green-500 text-white text-sm px-3 py-1 rounded">RSVP</a>
                 <a href="mailto:{{contact_email}}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded">Contact Organizer</a>
                 <a href="/events/edit/{{id}}" class="inline-block bg-gray-600 hover:bg-gray-500 text-white text-sm px-3 py-1 rounded">Edit</a>
                 <form action="/events/delete/{{id}}" method="POST" class="inline" onsubmit="return confirm('Delete this event?');">
