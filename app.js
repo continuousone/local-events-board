@@ -16,8 +16,14 @@ db.authenticate()
 const app = express();
 
 // Handlebars
-app.engine('handlebars', engine({ defaultLayout: 'main' }));
-app.set('view engine', 'handlebars');
+app.engine('handlebars', engine({
+  defaultLayout: 'main',
+  helpers: {
+    ifEquals: function (a, b, options) {
+      return a === b ? options.fn(this) : options.inverse(this);
+    }
+  }
+}));
 
 // Body Parser
 app.use(express.urlencoded({ extended: false }));
