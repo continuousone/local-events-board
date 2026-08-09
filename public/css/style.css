@@ -118,3 +118,47 @@ header.inner nav ul li a:hover {
   border-radius: 4px;
   margin-bottom: 1rem;
 }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hamburger {
+    display: flex;
+  }
+
+  header.inner {
+    position: relative;
+  }
+
+  header.inner nav ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1a1a2e;
+    padding: 1rem 2rem;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  header.inner nav ul.nav-open {
+    display: flex;
+  }
+}

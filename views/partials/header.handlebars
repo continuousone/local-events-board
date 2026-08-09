@@ -1,8 +1,13 @@
 <header class="inner">
   <h2><a href="/"><i class="fas fa-calendar-alt"></i>
       LocalEvents</a></h2>
+  <button class="hamburger" id="navToggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   <nav>
-    <ul>
+    <ul id="navMenu">
       <li>
         <a href="/">Home</a>
       </li>
@@ -15,3 +20,8 @@
     </ul>
   </nav>
 </header>
+<script>
+  document.getElementById('navToggle').addEventListener('click', function () {
+    document.getElementById('navMenu').classList.toggle('nav-open');
+  });
+</script>
