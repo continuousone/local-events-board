@@ -24,6 +24,7 @@ app.engine('handlebars', engine({
     }
   }
 }));
+app.set('view engine', 'handlebars');
 
 // Body Parser
 app.use(express.urlencoded({ extended: false }));
