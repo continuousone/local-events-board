@@ -10,7 +10,7 @@ Attendee.belongsToMany(Event, { through: EventAttendee, foreignKey: 'attendeeId'
 
 // Sync all three tables (events, attendees, event_attendees) together,
 // so the join table is created only after both sides of the relationship exist
-db.sync().then(() => {
+db.sync({ alter: true }).then(() => {
   console.log('All tables synced');
 });
 
