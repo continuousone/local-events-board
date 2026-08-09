@@ -1,0 +1,45 @@
+<section id="add" class="container">
+    <div class="form-wrap">
+      <h1>Add An Event</h1>
+      <p>Share your event with the community</p>
+      {{#each errors}}
+        <div class="error">
+          <p>{{text}}</p>
+        </div>
+      {{/each}}
+      <form action="/events/add" method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+          <label for="image">Event Image (optional)</label>
+          <input type="file" name="image" id="image" class="input-box" accept="image/*">
+        </div>
+        <div class="input-group">
+          <label for="title">Event Title</label>
+          <input type="text" name="title" id="title" class="input-box" placeholder="eg. Farmers Market, Open Mic Night"
+            maxlength="100" value={{title}}>
+        </div>
+        <div class="input-group">
+          <label for="category">Category</label>
+          <input type="text" name="category" id="category" class="input-box" placeholder="eg. music, sports, community"
+          maxlength="100" value={{category}}>
+        </div>
+        <div class="input-group">
+          <label for="event_date">Date</label>
+          <input type="date" name="event_date" id="event_date" class="input-box" value={{event_date}}>
+        </div>
+        <div class="input-group">
+          <label for="location">Location</label>
+          <input type="text" name="location" id="location" class="input-box" placeholder="eg. Central Park" value={{location}}>
+        </div>
+        <div class="input-group">
+          <label for="description">Description</label>
+          <textarea name="description" id="description" class="input-box" placeholder="Describe the event"
+            rows="10">{{description}}</textarea>
+        </div>
+        <div class="input-group">
+          <label for="contact_email">Contact Email</label>
+          <input type="email" name="contact_email" id="contactemail" class="input-box" placeholder="Enter an email" value={{contact_email}}>
+        </div>
+        <input type="submit" value="Add Event" class="btn btn-reverse">
+      </form>
+    </div>
+  </section>
