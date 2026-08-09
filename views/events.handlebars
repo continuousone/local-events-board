@@ -1,7 +1,7 @@
 <section id="events" class="container mx-auto px-6 py-8">
-    <h1 class="text-3xl font-bold mb-6">All Events</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center sm:text-left">All Events</h1>
 
-    <form method="GET" action="/events" class="flex flex-wrap gap-4 mb-6">
+    <form method="GET" action="/events" class="flex flex-wrap justify-center sm:justify-start gap-4 mb-6">
       <div>
         <label for="sort" class="block text-sm mb-1">Sort by date</label>
         <select name="sort" id="sort" class="input-box" onchange="this.form.submit()">
@@ -20,7 +20,7 @@
       </div>
     </form>
 
-    <div class="flex flex-wrap gap-6">
+    <div class="flex flex-wrap justify-center sm:justify-start gap-6">
       {{#each events}}
         <div class="w-80 bg-gray-900 text-white rounded-lg shadow-lg overflow-hidden flex flex-col">
           {{#if image}}
