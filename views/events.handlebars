@@ -1,4 +1,4 @@
-<section id="events" class="container mx-auto px-6 py-8">
+<section id="events" class="container mx-auto px-4 sm:px-6 py-8">
     <h1 class="text-3xl font-bold mb-6 text-center sm:text-left">All Events</h1>
 
     <form method="GET" action="/events" class="flex flex-wrap justify-center sm:justify-start gap-4 mb-6">
@@ -22,7 +22,7 @@
 
     <div class="flex flex-wrap justify-center sm:justify-start gap-6">
       {{#each events}}
-        <div class="w-80 bg-gray-900 text-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+        <div class="w-full sm:w-80 bg-gray-900 text-white rounded-lg shadow-lg overflow-hidden flex flex-col">
           {{#if image}}
             <img src="{{image}}" alt="{{title}}" class="w-full h-40 object-cover">
           {{/if}}
