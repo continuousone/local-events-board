@@ -127,6 +127,7 @@ header.inner nav ul li a:hover {
   border: none;
   cursor: pointer;
   padding: 0.5rem;
+  margin-left: auto;
 }
 
 .hamburger span {
