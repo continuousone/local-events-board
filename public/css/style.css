@@ -50,10 +50,33 @@ header.inner nav ul li a:hover {
 }
 
 .landing-hero {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background:
+  linear-gradient(135deg, rgba(251, 124, 5, 0.5), rgba(156, 9, 182, 0.5)),
+  url('../images/event.jpg') center/cover no-repeat;
   color: #fff;
-  text-align: center;
-  padding: 6rem 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0,0,0,.75);
+  padding: 50px 100px;
+  border-radius: 10px;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .landing-hero h1 {
@@ -71,14 +94,14 @@ header.inner nav ul li a:hover {
   display: inline-block;
   padding: 0.7rem 1.5rem;
   border-radius: 4px;
-  background: #333;
+  background: #d8046b;
   color: #fff;
-  margin: 0 0.5rem;
+  margin: 0.5rem 0.5rem;
   font-weight: 500;
 }
 
 .btn-reverse {
-  background: #4f8ff7;
+  background: #e96404;
 }
 
 .btn:hover {
@@ -162,4 +185,14 @@ header.inner nav ul li a:hover {
   header.inner nav ul.nav-open {
     display: flex;
   }
+  .hero-buttons {
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+}
+
+.hero-buttons .btn {
+  width: 100%;
+  margin: 0;
+}
 }
