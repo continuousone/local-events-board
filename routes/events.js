@@ -92,6 +92,54 @@ router.post('/add', upload.single('image'), (req, res) => {
   }
 });
 
+// Display edit event form
+router.get('/edit/:id', (req, res) => {
+  Event.findByPk(req.params.id, { raw: true })
+    .then(event => {
+      if (!event) return res.redirect('/events');
+      res.render('edit', { event });
+    })
+    .catch(err => res.render('error', { error: err }));
+});
+
+// Update an event
+router.post('/edit/:id', upload.single('image'), (req, res) => {
+  let { title, category, event_date, location, description, contact_email } = req.body;
+  let errors = [];
+
+  if (!title) errors.push({ text: 'Please add a title' });
+  if (!category) errors.push({ text: 'Please add a category' });
+  if (!event_date) errors.push({ text: 'Please add a date' });
+  if (!location) errors.push({ text: 'Please add a location' });
+  if (!description) errors.push({ text: 'Please add a description' });
+  if (!contact_email) errors.push({ text: 'Please add a contact email' });
+
+  if (errors.length > 0) {
+    return res.render('edit', {
+      errors,
+      event: { id: req.params.id, title, category, event_date, location, description, contact_email }
+    });
+  }
+
+  category = category.toLowerCase();
+
+  const updateData = { title, category, event_date, location, description, contact_email };
+  if (req.file) {
+    updateData.image = req.file.filename; // only overwrite image if a new one was uploaded
+  }
+
+  Event.update(updateData, { where: { id: req.params.id } })
+    .then(() => res.redirect('/events'))
+    .catch(err => res.render('error', { error: err.message }));
+});
+
+// Delete an event
+router.post('/delete/:id', (req, res) => {
+  Event.destroy({ where: { id: req.params.id } })
+    .then(() => res.redirect('/events'))
+    .catch(err => res.render('error', { error: err.message }));
+});
+
 // Search for events by category or location
 router.get('/search', (req, res) => {
   let { term } = req.query;

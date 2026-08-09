@@ -1,0 +1,44 @@
+<section id="edit" class="container">
+    <div class="form-wrap">
+      <h1>Edit Event</h1>
+      {{#each errors}}
+        <div class="error">
+          <p>{{text}}</p>
+        </div>
+      {{/each}}
+      <form action="/events/edit/{{event.id}}" method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+          <label for="image">Event Image</label>
+          {{#if event.image}}
+            <img src="/uploads/{{event.image}}" alt="{{event.title}}" class="w-32 h-32 object-cover rounded mb-2">
+          {{/if}}
+          <input type="file" name="image" id="image" class="input-box" accept="image/*">
+        </div>
+        <div class="input-group">
+          <label for="title">Event Title</label>
+          <input type="text" name="title" id="title" class="input-box" maxlength="100" value={{event.title}}>
+        </div>
+        <div class="input-group">
+          <label for="category">Category</label>
+          <input type="text" name="category" id="category" class="input-box" maxlength="100" value={{event.category}}>
+        </div>
+        <div class="input-group">
+          <label for="event_date">Date</label>
+          <input type="date" name="event_date" id="event_date" class="input-box" value={{event.event_date}}>
+        </div>
+        <div class="input-group">
+          <label for="location">Location</label>
+          <input type="text" name="location" id="location" class="input-box" value={{event.location}}>
+        </div>
+        <div class="input-group">
+          <label for="description">Description</label>
+          <textarea name="description" id="description" class="input-box" rows="10">{{event.description}}</textarea>
+        </div>
+        <div class="input-group">
+          <label for="contact_email">Contact Email</label>
+          <input type="email" name="contact_email" id="contactemail" class="input-box" value={{event.contact_email}}>
+        </div>
+        <input type="submit" value="Save Changes" class="btn btn-reverse">
+      </form>
+    </div>
+  </section>
