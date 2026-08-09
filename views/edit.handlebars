@@ -10,7 +10,7 @@
         <div class="input-group">
           <label for="image">Event Image</label>
           {{#if event.image}}
-            <img src="/uploads/{{event.image}}" alt="{{event.title}}" class="w-32 h-32 object-cover rounded mb-2">
+            <img src="{{event.image}}" alt="{{event.title}}" class="w-32 h-32 object-cover rounded mb-2">
           {{/if}}
           <input type="file" name="image" id="image" class="input-box" accept="image/*">
         </div>
