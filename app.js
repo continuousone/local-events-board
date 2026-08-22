@@ -21,6 +21,14 @@ app.engine('handlebars', engine({
   helpers: {
     ifEquals: function (a, b, options) {
       return a === b ? options.fn(this) : options.inverse(this);
+    },
+    formatDate: function (dateStr) {
+      if (!dateStr) return '';
+      // Parse the YYYY-MM-DD string manually (not via `new Date(dateStr)`) to avoid
+      // timezone shifting the date back a day
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const date = new Date(year, month - 1, day);
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
   }
 }));

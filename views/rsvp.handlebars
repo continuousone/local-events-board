@@ -1,7 +1,7 @@
 <section id="rsvp" class="container mx-auto px-6 py-8">
   <div class="form-wrap">
     <h1>RSVP: {{event.title}}</h1>
-    <p class="mb-4">{{event.event_date}} &mdash; {{event.location}}</p>
+    <p class="mb-4">{{formatDate event.event_date}} &mdash; {{event.location}}</p>
 
     {{#each errors}}
       <div class="error">
