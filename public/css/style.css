@@ -89,11 +89,18 @@ header.inner nav ul li a:hover {
   margin-bottom: 2rem;
   opacity: 0.85;
 }
+button,
+input[type="submit"] {
+  border: none;
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+}
 
 .btn {
   display: inline-block;
   padding: 0.7rem 1.5rem;
-  border-radius: 4px;
+  border-radius: 10px;
   background: #d8046b;
   color: #fff;
   margin: 0.5rem 0.5rem;
